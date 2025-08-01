@@ -15,21 +15,18 @@ from utils import RemoteConnection
 """
 Define your custom observation keys here
 """
-custom_obs_keys = [
-    "time", 
-    'myohand_qpos',
-    'myohand_qvel',
-    'pros_hand_qpos',
-    'pros_hand_qvel',
-    'object_qpos',
-    'object_qvel',
-    'start_pos',
-    'goal_pos',
-    'obj_pos',
-    'reach_err',
-    'pass_err',
+custom_obs_keys = [ 
+    'pelvis_pos', 
+    'body_qpos', 
+    'body_qvel', 
+    'ball_pos', 
+    'ball_vel', 
+    'paddle_pos', 
+    'paddle_vel', 
+    'paddle_ori', 
+    'reach_err', 
+    'touching_info', 
     'act',
-    "touching_body",
 ]
 
 def pack_for_grpc(entity):
