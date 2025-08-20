@@ -67,7 +67,14 @@ if LOCAL_EVALUATION:
 else:
     rc = RemoteConnection("localhost:8085")
 
-policy = Policy(rc)
+#policy = Policy(rc)
+path = '/'.join(os.path.realpath('baseline_mc25_tabletennis.zip').split('/')[:-1])
+
+root_path = os.path.dirname(os.path.abspath(os.path.join(__file__, os.pardir)))
+print(root_path)
+model = PPO.load(os.path.join(root_path, 'baseline_mc25_tabletennis'))
+
+print('Loading Table Tennis Policy')
 
 # compute correct observation space using the custom keys
 shape = get_custom_observation(rc, custom_obs_keys).shape
