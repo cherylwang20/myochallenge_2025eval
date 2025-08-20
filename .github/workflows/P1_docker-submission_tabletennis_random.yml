@@ -35,7 +35,7 @@ jobs:
     
     - name: Build the Docker image
       run: |
-        docker compose -f docker-compose-TableTennisAgentRandom.yml build
+        docker compose -f docker-compose-TabletennisAgentRandom.yml build
 
     - name: Push to evalai
       run: evalai push tabletennis_agent_random:latest --phase myochallenge2025-tabletennisphase1-2628 --private
