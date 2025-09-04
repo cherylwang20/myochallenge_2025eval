@@ -11,6 +11,7 @@ import grpc
 import gymnasium as gym
 
 from utils import RemoteConnection
+from stable_baselines3 import PPO
 
 """
 Define your custom observation keys here
