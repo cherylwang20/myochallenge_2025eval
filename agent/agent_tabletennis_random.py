@@ -31,7 +31,7 @@ custom_obs_keys = [
 ]
 
 class ActionExpander:
-    def __init__(self, full_action_dim=290):
+    def __init__(self, full_action_dim=275):
         self.syn_action_shape = 89
         self.full_action_dim = full_action_dim
         self.action_mapping = {
