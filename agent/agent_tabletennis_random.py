@@ -30,6 +30,31 @@ custom_obs_keys = [
     'act',
 ]
 
+class ActionExpander:
+    def __init__(self, full_action_dim=290):
+        self.syn_action_shape = 89
+        self.full_action_dim = full_action_dim
+        self.action_mapping = {
+            0: list(range(0, 11)),    1: list(range(11, 22)),   2: [22],        3: [23],
+            4: list(range(24, 28)),   5: list(range(28, 32)),   6: list(range(32, 40)), 7: list(range(40, 48)),
+            8: list(range(48, 69)),   9: list(range(69, 90)),   10: list(range(90, 95)), 11: list(range(95, 100)),
+            12: list(range(100, 107)),13: list(range(107, 114)),14: list(range(114, 119)),15: list(range(119, 124)),
+            16: list(range(124, 130)),17: list(range(130, 136)),18: list(range(136, 161)),19: list(range(161, 186)),
+            20: list(range(186, 192)),21: list(range(192, 198)),22: list(range(198, 204)),23: list(range(204, 210))
+        }
+
+        # Add direct mapping: 24–88 → indices 210–274
+        for i in range(24, 89):
+            self.action_mapping[i] = [i + 186]  # 24 maps to 210, ..., 88 maps to 274
+
+    def expand(self, reduced_action):
+        assert len(reduced_action) == self.syn_action_shape
+        full_action = np.zeros(self.full_action_dim, dtype=np.float32)
+        for i, indices in self.action_mapping.items():
+            full_action[indices] = reduced_action[i]
+        return full_action
+
+
 def pack_for_grpc(entity):
     return pickle.dumps(entity)
 
@@ -81,6 +106,8 @@ print('Loading Table Tennis Policy')
 shape = get_custom_observation(rc, custom_obs_keys).shape
 rc.set_output_keys(custom_obs_keys)
 
+expander = ActionExpander()
+
 flat_completed = None
 trial = 0
 while not flat_completed:
@@ -96,11 +123,12 @@ while not flat_completed:
     while not flag_trial:
 
         ################################################
-        ## Replace with your trained policy.
-        action = rc.action_space.sample()
+        obs = get_custom_observation(rc, custom_obs_keys)
+        action, _ = model.predict(obs)
+        full_action = expander.expand(action)
         ################################################
 
-        base = rc.act_on_environment(action)
+        base = rc.act_on_environment(full_action)
 
         obs = base["feedback"][0]
         flag_trial = base["feedback"][2]
