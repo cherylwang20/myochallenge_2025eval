@@ -45,7 +45,7 @@ class ActionExpander:
 
         # Add direct mapping: 24–88 → indices 210–274
         for i in range(24, 89):
-            self.action_mapping[i] = [i + 186]  # 24 maps to 210, ..., 88 maps to 274
+            self.action_mapping[i] = [i + 169]  # 24 maps to 210, ..., 88 maps to 274
 
     def expand(self, reduced_action):
         assert len(reduced_action) == self.syn_action_shape
