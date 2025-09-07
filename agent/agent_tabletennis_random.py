@@ -123,7 +123,7 @@ while not flat_completed:
     while not flag_trial:
 
         ################################################
-        obs = get_custom_observation(rc, custom_obs_keys)
+        #obs = get_custom_observation(rc, custom_obs_keys)
         action, _ = model.predict(obs)
         full_action = expander.expand(action)
         ################################################
